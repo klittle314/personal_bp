@@ -1,0 +1,150 @@
+---
+title: "BP review"
+format: pdf
+editor: visual
+---
+
+
+```{r}
+#| label: set-up
+#| echo: false
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(readxl)
+library(here)
+library(patchwork)
+source(here::here("scripts", "helper.R"))
+
+here::i_am("reports/BP1.qmd")
+
+file_name <- "BP table.xlsx"
+
+df_raw <- read_excel(here::here("data", file_name)) %>% 
+              mutate(
+                K_P = if_else(K_P >= 200,81, K_P),
+                K_pulse_press = K_S - K_D,
+                L_pulse_press = L_S - L_D
+              )
+
+df <- df_raw %>% 
+          mutate(
+                 Date = as.Date(Date),
+                 Date_char = as.character(Date),
+                 Time_char = as.character(Time),
+                 Time_only = str_split_fixed(Time," ", n = 2)[,2],
+                 Date_time = as.POSIXct(paste0(Date_char, "", Time_only), format = "%Y-%m-%d %H:%M:%OS")
+          )
+          
+
+
+```
+
+```{r}
+#| label: run-charts-1
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-height: 3.5
+#| fig-width: 8
+
+
+mean_K_S <- round(mean(df$K_S, na.rm = TRUE),0)
+
+mean_K_D <- round(mean(df$K_D, na.rm = TRUE),0)
+
+mean_L_S <- round(mean(df$L_S, na.rm = TRUE),0)
+
+mean_L_D <- round(mean(df$L_D, na.rm = TRUE),0)
+
+mean_K_P <- round(mean(df$K_P, na.rm = TRUE),0)
+
+mean_L_P <- round(mean(df$L_P, na.rm = TRUE),0)
+
+mean_K_pulse_press <- round(mean(df$K_pulse_press, na.rm = TRUE),0)
+
+mean_L_pulse_press <- round(mean(df$L_pulse_press, na.rm = TRUE),0)
+
+
+p_K_S <- run_chart_mean(var_y = "K_S",
+                        y_ref = mean_K_S)
+
+p_L_S <- run_chart_mean(var_y = "L_S",
+                    y_ref = mean_L_S) 
+
+p_K_D <- run_chart_mean(var_y = "K_D",
+                        y_ref = mean_K_D,
+                        systolic = FALSE)
+
+p_L_D <- run_chart_mean(var_y = "L_D",
+                    y_ref = mean_L_D, 
+                    systolic = FALSE) 
+
+p_K_P <- run_chart_mean(var_y = "K_P",
+                    y_ref = mean_K_P, 
+                    pulse = TRUE) 
+
+p_L_P <- run_chart_mean(var_y = "L_P",
+                    y_ref = mean_L_P, 
+                    pulse = TRUE) 
+
+p_K_pulse_press <- run_chart_mean(var = "K_pulse_press",
+                                   y_ref = mean_K_pulse_press,
+                                  systolic = FALSE,
+                                  pulse = FALSE)
+
+p_L_pulse_press <- run_chart_mean(var = "L_pulse_press",
+                                   y_ref = mean_L_pulse_press,
+                                  systolic = FALSE,
+                                  pulse = FALSE)
+```
+
+```{r}
+#| label: K-plots
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-height: 9
+#| fig-width: 8
+
+p_K_S/p_K_D/p_K_P
+
+```
+```{r}
+#| label: L-plots
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-height: 9
+#| fig-width: 8
+
+p_L_S/p_L_D/p_L_P
+
+```
+```{r}
+#| label: K-scatter-plot
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-height: 9
+#| fig-width: 8
+```
+\newpage
+## Pulse Pressure:   Should be around 40 mm
+
+120/80 -> 120 - 80 = 40.
+
+it is difference between systolic and diastolic.
+```{r}
+#| label: Pulse-Pressure
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-height: 8
+#| fig-width: 9
+
+
+p_K_pulse_press/p_L_pulse_press
+```
+
