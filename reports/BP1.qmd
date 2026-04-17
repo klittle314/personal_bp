@@ -68,14 +68,19 @@ mean_L_pulse_press <- round(mean(df$L_pulse_press, na.rm = TRUE),0)
 
 
 p_K_S <- run_chart_mean(var_y = "K_S",
-                        y_ref = mean_K_S)
+                        y_ref = mean_K_S,
+                        systolic = TRUE, 
+                        pulse = FALSE)
 
 p_L_S <- run_chart_mean(var_y = "L_S",
-                    y_ref = mean_L_S) 
+                    y_ref = mean_L_S,
+                    systolic = TRUE, 
+                        pulse = FALSE) 
 
 p_K_D <- run_chart_mean(var_y = "K_D",
                         y_ref = mean_K_D,
-                        systolic = FALSE)
+                        systolic = FALSE, 
+                        pulse = FALSE)
 
 p_L_D <- run_chart_mean(var_y = "L_D",
                     y_ref = mean_L_D, 
