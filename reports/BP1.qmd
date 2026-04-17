@@ -84,25 +84,28 @@ p_K_D <- run_chart_mean(var_y = "K_D",
 
 p_L_D <- run_chart_mean(var_y = "L_D",
                     y_ref = mean_L_D, 
-                    systolic = FALSE) 
+                    systolic = FALSE,
+                    pulse = FALSE) 
 
-p_K_P <- run_chart_mean(var_y = "K_P",
+p_K_P<- run_chart_mean(var_y = "K_P",
                     y_ref = mean_K_P, 
+                    systolic = FALSE,
                     pulse = TRUE) 
 
 p_L_P <- run_chart_mean(var_y = "L_P",
                     y_ref = mean_L_P, 
+                    systolic = FALSE,
                     pulse = TRUE) 
 
 p_K_pulse_press <- run_chart_mean(var = "K_pulse_press",
                                    y_ref = mean_K_pulse_press,
-                                  systolic = FALSE,
-                                  pulse = FALSE)
+                                  systolic = TRUE,
+                                  pulse = TRUE)
 
 p_L_pulse_press <- run_chart_mean(var = "L_pulse_press",
                                    y_ref = mean_L_pulse_press,
-                                  systolic = FALSE,
-                                  pulse = FALSE)
+                                  systolic = TRUE,
+                                  pulse = TRUE)
 ```
 
 ```{r}
