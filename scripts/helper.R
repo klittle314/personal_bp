@@ -9,20 +9,22 @@ run_chart_mean <- function(data = df,
  
   mean_use <- round(colMeans(df[,var_y], na.rm = TRUE),1)
    
-  if(!systolic && !pulse) {
+  if(systolic && pulse) {
     ylab = "Pulse Pressure mm HG"
     subtitle = paste0("Pulse Pressure avg = ", mean_use)
   }
   
-  if(systolic){
+  if(systolic && !pulse){
     ylab <- "Systolic mm HG"
     subtitle <- paste0("Systolic avg = ", mean_use)
-  } else {
+  }
+  
+  if(!systolic && !pulse) {
     ylab <- "Diastolic mm HG"
     subtitle <- paste0("Diastolic avg = ", mean_use)
   }
   
-  if(pulse) {
+  if(!systolic && pulse) {
     ylab = "Pulse BPM"
     subtitle = paste0("Pulse BPM = ", mean_use)
   }
