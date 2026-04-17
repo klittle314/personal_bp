@@ -129,6 +129,18 @@ p_L_S/p_L_D/p_L_P
 #| warning: false
 #| fig-height: 9
 #| fig-width: 8
+
+p_scatter_KL <- ggplot(data = df, aes(x = K_D, y = K_S))+
+                  geom_point()+
+                  labs(title = "KL systolic vs diastolic BP",
+                       subtitle = paste0(as.character(min(df$Date, na.rm = TRUE))," to ",as.character(max(df$Date, na.rm = TRUE))),
+                       caption = "reference lines:  120 and 80"
+                  ) +
+                  theme_bw() +
+                  geom_hline(yintercept = 120, linetype = "dashed")+
+                  geom_vline(xintercept = 80, linetype = "dashed")
+
+p_scatter_KL
 ```
 \newpage
 ## Pulse Pressure:   Should be around 40 mm
